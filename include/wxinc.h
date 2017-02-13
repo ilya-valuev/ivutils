@@ -144,7 +144,7 @@ $Date: 2013/08/16 11:32:45 $
 #endif
 
 
-#ifdef WXWIN3
+#if wxMAJOR_VERSION >= 3 
 
 inline const char *fmt(wxCStrData format,...){
   va_list args;
