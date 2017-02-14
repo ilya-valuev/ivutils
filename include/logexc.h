@@ -101,6 +101,11 @@ const char *fmt(const char *format,...);
 std::string fmt_s(const char *format,...);
 std::string fmt_va(const char *format, va_list);
 
+# if USE_WX
+///\en Here arguments are wxStrings (not working!)
+const char *wxfmt(const char *format,...);
+
+# endif
 
 /// Logger class to control (computational) function behaviour when something requiring user attention has happened.
 /// message(signal,errcode, text) is used to either throw an exception or return errorcode
@@ -278,6 +283,7 @@ int message(const exc_t &signal, int errcode, const char *what, arg1_type arg1, 
   else 
     return -1;
 }
+
 /// global message function
 template<class exc_t>
 int message(const exc_t &signal, int errcode, const char *what){

@@ -5,6 +5,11 @@
 # include "logexc.h"
 # include <vector>
 
+# if USE_WX
+# include <wx/string.h>
+# endif
+
+
 using namespace std;
 
 message_logger std_log;
@@ -22,8 +27,8 @@ stdfile_logger default_log("",0,stdout,stderr,vblALLBAD|vblMESS1,vblFATAL,1);
 const char *fmt(const char *format,...){
   va_list args;
   va_start(args,format);
-  static char buff[1024];
-  vsnprintf(buff,1024,format,args);
+  static char buff[2048];
+  vsnprintf(buff,2048,format,args);
   va_end(args);
   return buff;
 }
@@ -69,6 +74,19 @@ std::string fmt_va(const char *format, va_list args)
 
     return & buff[0];
 }
+
+# if USE_WX
+
+const char *wxfmt(const char *format,...){
+  va_list args;
+  va_start(args,format);
+  static wxString buff;
+  buff= wxString::FormatV(format,args);
+  va_end(args);
+  return buff.c_str();
+}
+
+# endif
 
 
 //fmt::fmt(const char *format,...){
