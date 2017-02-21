@@ -140,6 +140,33 @@ const Complex cerf_series( const Complex z )
   return sum * 2.0 / sqrt(M_PI) ;
 }
   
+
+
+//
+// Deduced from abov for cerf(z)/z at small z
+// 
+//
+template< class Complex>
+const Complex cerf_div_series( const Complex z )
+{
+  double tiny = 1e-20 ;       // a small number compared with 1.
+  // warning("cerf_series:");
+  Complex sum(0.0) ;
+  Complex term(1.) ;
+  Complex z2(z*z) ;
+
+  for (int n=0; n<3 || abs(term) > abs(sum)*tiny; n++)
+    {
+      sum = sum + term / (2*n+1) ;
+      term = -term * z2 / (n+1) ;
+    }
+
+  return sum * 2.0 / sqrt(M_PI) ;
+}
+
+
+
+
 //
 // Numerical Recipes quotes a formula due to Rybicki for evaluating 
 // Dawson's Integral:
