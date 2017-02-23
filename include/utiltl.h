@@ -505,7 +505,7 @@ int average_files(filename_it beg, filename_it end, const char *output){
       comments.clear();
     f=fopen((*beg).c_str(),"rt");
     if(!f){
-      LOGMSG(vblWARN,fmt("average_files: can't open the file '%s', skipped!",(*beg).c_str()),0);
+      LOGMSG(vblWARN,fmt("average_files: can't open the file '%s', skipped!",(const char *)(*beg).c_str()),0);
       continue;
     }
     int line=0;
@@ -531,7 +531,7 @@ int average_files(filename_it beg, filename_it end, const char *output){
         table.resize(ncol);
       }
       else if(num<ncol){
-        LOGMSG(vblWARN,fmt("average_files: unexpected number of entries at line %d in '%s', file skipped!",line,(*beg).c_str()),0);
+        LOGMSG(vblWARN,fmt("average_files: unexpected number of entries at line %d in '%s', file skipped!",line,(const char *)(*beg).c_str()),0);
         skip=true;
         break;
       }
@@ -551,7 +551,7 @@ int average_files(filename_it beg, filename_it end, const char *output){
     if(!gtable.size())
       gtable=table;
     else if(gtable[0].size()>table[0].size()){
-      LOGMSG(vblWARN,fmt("average_files: number of lines in '%s' is too small, file skipped!",(*beg).c_str()),0);
+      LOGMSG(vblWARN,fmt("average_files: number of lines in '%s' is too small, file skipped!",(const char *)(*beg).c_str()),0);
       continue;
     }
     else{ // summing up

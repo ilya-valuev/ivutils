@@ -361,7 +361,7 @@ void Exit_wait(int val){
   press_key=val;
 }
 
-void serror(char *format,...){
+void serror(const char *format,...){
  va_list vl;
  va_start(vl,format);
  vprintf(format,vl);
@@ -379,8 +379,8 @@ int err_status(){
 
 
 // generic dialog interface
-void (*msg_error)(char *format, ...)= serror;
-void (*fatal_error)(char *format, ...)= serror;
+void (*msg_error)(const char *format, ...)= serror;
+void (*fatal_error)(const char *format, ...)= serror;
 # ifdef USE_MPI
 int master_printf(const char *format,...) {
   va_list vl;

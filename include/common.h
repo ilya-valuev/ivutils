@@ -288,10 +288,10 @@ extern "C" {
 # endif
 
 # ifdef __cplusplus
-void serror(char *str,...);
+void serror(const char *str,...);
 
-extern void (*msg_error)(char *format, ...);
-extern void (*fatal_error)(char *format, ...);
+extern void (*msg_error)(const char *format, ...);
+extern void (*fatal_error)(const char *format, ...);
 extern int (*eprintf)(const char *format,...);
 
 extern int err_sts;
