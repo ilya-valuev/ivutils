@@ -100,7 +100,7 @@ public:
   }
 
 
-  int SetFileName(char *filename){
+  int SetFileName(const char *filename){
     if(state<=R_INIT){
       strncpy(file,filename,250);
       return 1;
