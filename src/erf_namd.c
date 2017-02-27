@@ -3,7 +3,7 @@
  * Specialized for 32-bit little endian architectures.
  */
 
-#ifdef WIN32  /* Real math libraries provide erf(). */
+#ifdef _WIN32  /* Real math libraries provide erf(). */
 
 /*
  * ====================================================
