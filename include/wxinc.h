@@ -146,7 +146,7 @@ $Date: 2013/08/16 11:32:45 $
 
 #if wxMAJOR_VERSION >= 3 
 
-inline const char *fmt(wxCStrData format,...){
+inline const char *fmt(const wxCStrData format,...){
   va_list args;
   va_start(args,format);
   static char buff[1024];
