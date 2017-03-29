@@ -288,7 +288,7 @@ int scan_range(char *range, realtype *a1, realtype *a2, realtype *step, char *de
     else return 0;
     c1=strtok(NULL,delim);
     if(c1){
-      if(!sscanf(c1,""REALFRM"",a2))return -2;
+      if(!sscanf(c1,"" REALFRM "",a2))return -2;
     }
     else return 0;
     c1=strtok(NULL,delim);
