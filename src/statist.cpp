@@ -208,7 +208,7 @@ Correlation::Correlation(){
   sub_mean=0;
 }
 
-# ifndef UNIX
+# ifndef FU
 int rint(double x){
   int fl=(int)floor(x);
   if(x-(double)fl > 0.5)return fl+1;

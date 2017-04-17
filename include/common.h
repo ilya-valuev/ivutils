@@ -147,7 +147,7 @@ $Date: 2015/11/19 08:46:44 $
 
 #ifndef UNIX
 # ifndef FU
-# define FU
+# define FU 1
 # endif
 #endif
 

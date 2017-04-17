@@ -2010,7 +2010,7 @@ int random(int num){
 
 # endif
 */
-# ifdef FU
+# if FU
 
 # ifdef __cplusplus
 extern "C" {
