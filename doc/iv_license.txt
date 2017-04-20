@@ -1,6 +1,6 @@
 IVUTILS library license, Version 1
 
-Copyright (c) 1992-2005 Ilya Valuev
+Copyright (c) 1992-2012 Ilya Valuev, Alexei Deinega
 
 Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed. 
 

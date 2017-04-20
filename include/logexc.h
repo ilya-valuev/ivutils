@@ -1,5 +1,7 @@
-# ifndef LOGEXC_H
-# define LOGEXC_H
+#ifndef LOGEXC_H
+#define LOGEXC_H
+
+/// @file logexc.h \brief Interface to process exceptions and output messages
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +13,7 @@
 # include <typeinfo>
 # endif
 
+# include <refobj.h>
 
 /// this specifies whether to put file/line info in error messages
 # ifndef LINFO
@@ -124,6 +127,10 @@ const char *wxfmt(const char *format,...);
 /// require message output or/and program termination. Stop level has effect only when exceptions are not thrown.
 /// The function extra_levels(eout_levels,estop_levels) is used to temporarily set the corresponding levels,
 /// they are unset (the original levels are restored) by calling extra_levels(0,0).
+///\ru
+/// Логгер предназначен для обработки ошибок, возникающих во внутренних функциях библиотеки.
+/// Первый механизм - это вызов исключений. Во внутренней функции кидается exeption и он ловится где-то снаружи.
+/// Второй вариант - ты кидаешь код возврата. Тогда каждая функция выше должна анализировать код возврата.
 class message_logger {
   // global message is a friend
  // template<class exc_t>
@@ -160,6 +167,13 @@ public:
       set_global(true);
     }
   }
+
+  // clones this logger
+  virtual message_logger *clone() const {
+    message_logger *p= new message_logger(descriptor,outlevel,stoplevel,throw_ex,0);
+    p->extra_levels(eoutlevel,estoplevel);
+    return p;
+  }
   
   /// returns a reference to global logger
   /// if not set, links with default message_logger
@@ -188,6 +202,10 @@ public:
   
   virtual void set_throw(int throw_exceptions){
     throw_ex=throw_exceptions;
+  }
+
+  virtual int get_throw() const {
+    return throw_ex;
   }
 
   virtual void set_levels(int out_level=vblALLBAD|vblMESS1, int stop_level=vblFATAL){
@@ -317,19 +335,43 @@ int message_str(const exc_t &signal, int errcode, const char *what){
     return -1;
 }
 
+enum STDLOG_FORMAT {
+  STDLOG_NEWLINE = 0x1
+};
+
+
 /// message logger for which std and error streams may be specified
 class stdfile_logger: public message_logger {
 protected:
   FILE *fout, *ferr;
+  int format;
+  bool flush_flag;
 public:
   stdfile_logger(const std::string &descriptor_="", int throw_exceptions=0, 
-                  FILE *out=stdout, FILE *err=stderr, 
-                  int out_level=vblALLBAD|vblMESS1,int stop_level=vblFATAL,
-                  int use_globally=0)
-                  : message_logger(descriptor_,out_level,stop_level,throw_exceptions,use_globally),fout(NULL), ferr(NULL){
+    FILE *out=stdout, FILE *err=stderr, int format=0,
+    int out_level=vblALLBAD|vblMESS1,int stop_level=vblFATAL,int use_globally=0):
+    message_logger(descriptor_,out_level,stop_level,throw_exceptions,use_globally),
+    fout(NULL),ferr(NULL),flush_flag(true){
     set_out(out);
     set_err(err);
+    set_format(format);
   }
+
+  ~stdfile_logger(){
+    if(fout && fout!=stdout)
+      fclose(fout);
+    if(ferr!=fout && ferr && ferr!=stderr)
+      fclose(ferr);
+  }
+
+  // clones this logger
+  virtual message_logger *clone() const {
+    stdfile_logger *p= new stdfile_logger(descriptor,throw_ex,fout,ferr,format,outlevel,stoplevel,0);
+    p->extra_levels(eoutlevel,estoplevel);
+    p->flush_flag=flush_flag;
+    return p;
+  }
+
   virtual void set_out(FILE *out, int close_prev=0){
     if(close_prev && fout && fout!=stderr && fout !=stdout)
       fclose(fout);
@@ -342,6 +384,10 @@ public:
     ferr=err;
   }
 
+  void set_format(int format_){
+    format=format_;
+  }
+
   virtual void log_text(int level, const char *messtype, const char *messtext){
     FILE *f= (level&vblALLBAD ? ferr : fout);
     if(!f)
@@ -351,13 +397,48 @@ public:
     if(std::string(messtype)!="")
       fprintf(f,"%s: ",messtype);
     fprintf(f,"%s\n",messtext);
+    if(format&STDLOG_NEWLINE)
+      fprintf(f,"\n");
+    if(flush_flag)fflush(f);
   }
 };
 
+///\en This is a compound logger. It reveives messages and sends them to all loggers
+/// in the list.
+///\ru Это составной логгер. Он принимает сообшения и передает
+/// их всем логгерам, которые находятся у него в списке.
+class vector_logger: public refvector<message_logger>, public message_logger{
+  virtual void log_text(int level, const char *messtype, const char *messtext){
+    for(size_t i=0;i<size();i++){
+      (*this)[i]->log_text(level,messtype,messtext);
+    }
+  }
+public:
+  vector_logger():refvector<message_logger>(1){}
+  // if parent does not throw and
+  // at least one of the child loggers throws exceptions then 1 is returned
+  virtual int get_throw() const {
+    if(throw_ex)
+      return throw_ex;
+    for(size_t i=0;i<size();i++){
+      if((*this)[i]->get_throw())
+        return 1;
+    }
+    return 0;
+  }
+  // clones this logger
+  virtual message_logger *clone() const {
+    vector_logger *p= new vector_logger();
+    for(size_t i=0;i<size();i++){
+      p->push_back((*this)[i]->clone());
+    }
+    return p;
+  }
+};
 
 /// macros with common usage
-#define LOGFATAL(code,text,lineinfo) ((lineinfo) ? ::message(vblFATAL,(code)," %s at %s:%d",(text),__FILE__,__LINE__) : \
-                                   (::message(vblFATAL,(code), (text))) )
+#define LOGFATAL(code,text,lineinfo) ((lineinfo) ? ::message(vblFATAL,(code),"%s at %s:%d\n",(text),__FILE__,__LINE__) : \
+                                   (::message(vblFATAL,(code),"%s",(text))) )
 
 
 #define LOGERR(code,text,lineinfo) ((lineinfo) ? ::message(vblOERR,(code)," %s at %s:%d",(text),__FILE__,__LINE__) : \

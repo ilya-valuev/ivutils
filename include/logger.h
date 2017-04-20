@@ -68,6 +68,8 @@ $Date: 2012/06/29 10:50:12 $
 # ifndef _LOGGER_H
 # define _LOGGER_H
 
+/// @file loger.h \brief Interface for collecting process variables identified by their symbolic names
+
 # include <map>
 # include <string>
 # include "refobj.h"
@@ -109,7 +111,7 @@ protected:
 
 
 public:
-   /// adds output descriptor, returns the data reference 
+  /// adds output descriptor, returns the data reference 
   /// to be used in constructors of derivates
   size_t AddField(out_t *ptr, const string& name,int on=1){
     int ind;
