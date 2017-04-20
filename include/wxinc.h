@@ -154,6 +154,11 @@ inline const char *fmt(const wxCStrData format,...){
   return buff;
 }
 
+
+# define GetPropVal GetAttribute
+# define DeleteProperty DeleteAttribute
+# define AddProperty AddAttribute
+
 # endif
 
 # endif
