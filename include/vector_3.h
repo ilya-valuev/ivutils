@@ -163,6 +163,7 @@ struct array_stor_t{
 ///\ru N-мерный вектор типа T с некоторыми полезными операциями
 template <class T, size_t N, class storage_t= array_stor_t<T,N> > 
 class Vector_Nt{
+public:
   storage_t v;
   
 public:  
