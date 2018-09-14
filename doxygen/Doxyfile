@@ -166,13 +166,13 @@ QT_AUTOBRIEF           = NO
 MULTILINE_CPP_IS_BRIEF = NO
 
 # If the INHERIT_DOCS tag is set to YES (the default) then an undocumented 
-# member inherits the documentation from any documented member that it 
+# member inherits the documentation from any documented var_field that it
 # re-implements.
 
 INHERIT_DOCS           = YES
 
 # If the SEPARATE_MEMBER_PAGES tag is set to YES, then doxygen will produce 
-# a new page for each member. If set to NO, the documentation of a member will 
+# a new page for each member. If set to NO, the documentation of a var_field will
 # be part of the file/class/namespace that contains it.
 
 SEPARATE_MEMBER_PAGES  = NO
