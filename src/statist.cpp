@@ -113,6 +113,7 @@ int Distribution::init(realtype x1,realtype x2, int np){
   //printf("constr --- %f  %f\n",distr(x1),distr(0));
   this->x1=x1;
   this->x2=x2;
+  dx = n>1 ? (x2 - x1) / (n - 1) : 0.;
   count=0;
   allcount=0;
   norm=norm_r2=0;

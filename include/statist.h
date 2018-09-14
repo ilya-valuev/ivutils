@@ -471,6 +471,7 @@ public:
 
 public:
  realtype x1,x2;
+ realtype dx;
  realtype norm;
  realtype norm_r2;
  realtype norma;
@@ -512,8 +513,27 @@ public:
    if(!count)return 0;
    return distr(x)*x*x/norm_r2a;
  }
+ ///\en Gets r2 norm calculated up to limiting argument value
+ realtype get_norm_r2(realtype xlim, realtype dx_=-1.) {
+   if (!count)return 0.;
+   double mult = 0, x;
+   if (dx<0)
+     dx = (x2 - x1) / (3 * (n - 1));
+   for (x = x1; x<xlim; x += dx)
+     mult += distr(x)*x*x*dx;
+   return isnan(1./mult) ?  1. : mult ;
+ }
+
 
  int point(realtype x,realtype  val);
+
+ ///\en same as above but with 3d weight 1/(4*pi*x*x*dx)  
+ int point_r2(realtype x, realtype  val) {
+   double k = 4 * M_PI*dx;
+   double f = fabs(x) < dx ? 1. / (k * dx*dx / 3.) : 1. / (k*x*x);
+   return point(x, f);
+ }
+
  realtype normalize(realtype norm=1.);
  realtype normalize_r2(realtype norm=1.,realtype dx=-1.);
 
