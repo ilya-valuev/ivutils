@@ -14,6 +14,7 @@
 #ifndef mcarloH
 
 # include "common.h"
+#include <random>
 
 
 class MonteCarlo {
@@ -22,6 +23,8 @@ protected:
  int accept;
  int aold;
  int need_adj;
+ std::mt19937_64 random_engine;
+ std::uniform_real_distribution<double> uniform_distr{0.0, 1.0};
 public:
  long tested;
  long accepted;
@@ -39,14 +42,20 @@ public:
   need_adj=0;
   k=1.;
  }
- MonteCarlo(){
-  T=1.;
-  nav=100;
-  nadj=10;
-  clear();
-//# ifndef UNIX
-//  randomize();
-//# endif
+
+ MonteCarlo(size_t seed): random_engine(seed){
+   T=1.;
+   nav=100;
+   nadj=10;
+   clear();
+   //
+
+  //# ifndef UNIX
+  //  randomize();
+  //# endif
+ }
+
+ MonteCarlo():MonteCarlo(std::random_device{}()){
  }
 
  realtype getT() const {

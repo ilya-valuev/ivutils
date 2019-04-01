@@ -24,7 +24,7 @@ int MonteCarlo::test(realtype dE, realtype prefact){
  if(dE<0 && prefact==1.)ac=1;
  else{
    realtype r1=prefact*exp(-dE/T);
-   realtype r2=((double )rand())/RAND_MAX;
+   realtype r2=uniform_distr(random_engine);
    if(r1<1){
      if(r1>=r2)ac=1;
    }
