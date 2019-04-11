@@ -521,7 +521,7 @@ public:
      dx = (x2 - x1) / (3 * (n - 1));
    for (x = x1; x<xlim; x += dx)
      mult += distr(x)*x*x*dx;
-   return isnan(1./mult) ?  1. : mult ;
+   return std::isnan(1./mult) ?  1. : mult ;
  }
 
 
