@@ -2016,7 +2016,7 @@ int random(int num){
 extern "C" {
 #endif
 
-int vsscanf(const char * str,const char *format,va_list ap){
+int vsscanf(const char * str,const char *format,va_list ap) throw(){
   int k=0,i;
   char *p[15];
   for(i=0;format[i];i++){
