@@ -14,7 +14,7 @@
 #include<math.h>
 #include<stdlib.h>
 #include "mcarlo.h"
-#include "common.h"
+//#include "common.h"
 
 
 int MonteCarlo::test(realtype dE, realtype prefact){
