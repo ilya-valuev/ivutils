@@ -543,7 +543,7 @@ public:
     T vv=fabs(v[0]);
     for (size_t i=1; i<v.dim(); i++) {
       if(fabs(v[i])>vv){
-        im=i;
+        im=(int)i;
         vv=fabs(v[i]);
       }
     }
