@@ -65,7 +65,7 @@ template< class Complex>
 const Complex cerfc_continued_fraction( const Complex z )
 {
   double tiny = 1e-20 ;     // a small number, large enough to calculate 1/tiny
-  double eps = 1e-15 ;      // large enough so that 1.0+eps > 1.0, when using
+  double eps = 1e-10 ;      // large enough so that 1.0+eps > 1.0, when using
                             // the floating point arithmetic
   //
   // first calculate z+ 1/2   1 

@@ -145,11 +145,14 @@ $Date: 2015/11/19 08:46:44 $
 # include <mpi.h>
 # endif
 
+
 #ifndef UNIX
 # ifndef FU
 # define FU 1
 # endif
 #endif
+
+//# define NO_CMNMATH
 
 # ifndef NO_CMNMATH
 
@@ -794,9 +797,11 @@ void Exit_wait(int val);
 
 # define ISZERO(a)           ( fabs(a)-FZero_general < 0 ? 1 : 0 )
 # define SIGN(a)           ( fabs(a)-FZero_general < 0 ? 0 : ( a< 0 ? -1 : 1) )
+# ifndef NO_CMNMATH
 # define fmin(a,b) ((a)>(b) ? (b):(a))
 # define fmax(a,b) ((a)>(b) ? (a):(b))
 # define fsign(a) ((a)>0 ? 1:-1)
+# endif
 # define Err_malloc(a,b) { (a)=malloc(b);if(!(a))serror("Memory  allocation error.");}
 
 # define Err_farmalloc(a,b) { (a)=farmalloc(b);if(!(a))serror("Far Memory  allocation error.");}

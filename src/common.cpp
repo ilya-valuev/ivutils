@@ -270,7 +270,7 @@ int string_scan(const char *str,char *format,char *delim,void *ptr, size_t field
 }
 
 
-int scan_range(char *range, realtype *a1, realtype *a2, realtype *step, char *delim){
+int scan_range(char *range, realtype *a1, realtype *a2, realtype *step, char const *delim){
   char *c1, *c2;
   char str[500];
  
@@ -2016,53 +2016,53 @@ int random(int num){
 extern "C" {
 #endif
 
-int vsscanf(const char * str,const char *format,va_list ap){
-  int k=0,i;
-  char *p[15];
-  for(i=0;format[i];i++){
-    if(format[i]=='%'){
-     if(format[i+1]=='%')i++;
-     else k++;
-    }
-  }
-  if(k>13)fatal_error("Ugly vsscanf: can't scan more than 13 fields.\n");
-
-  //va_list ap;
-  //va_start(ap,format);
-  for(i=0;i<k;i++){
-    p[i]=va_arg(ap,char*);
-  }
-
-  switch(k){
-  case 1:
-    return sscanf(str,format,p[0]);
-  case 2:
-    return sscanf(str,format,p[0],p[1]);
-  case 3:
-    return sscanf(str,format,p[0],p[1],p[2]);
-  case 4:
-    return sscanf(str,format,p[0],p[1],p[2],p[3]);
-  case 5:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4]);
-  case 6:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5]);
-  case 7:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
-  case 8:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7]);
-  case 9:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8]);
-  case 10:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9]);
-  case 11:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10]);
-  case 12:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11]);
-  case 13:
-    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],p[12]);
-  }
-  return 0;
-}
+//int vsscanf(const char * str,const char *format,va_list ap){
+//  int k=0,i;
+//  char *p[15];
+//  for(i=0;format[i];i++){
+//    if(format[i]=='%'){
+//     if(format[i+1]=='%')i++;
+//     else k++;
+//    }
+//  }
+//  if(k>13)fatal_error("Ugly vsscanf: can't scan more than 13 fields.\n");
+//
+//  //va_list ap;
+//  //va_start(ap,format);
+//  for(i=0;i<k;i++){
+//    p[i]=va_arg(ap,char*);
+//  }
+//
+//  switch(k){
+//  case 1:
+//    return sscanf(str,format,p[0]);
+//  case 2:
+//    return sscanf(str,format,p[0],p[1]);
+//  case 3:
+//    return sscanf(str,format,p[0],p[1],p[2]);
+//  case 4:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3]);
+//  case 5:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4]);
+//  case 6:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5]);
+//  case 7:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6]);
+//  case 8:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7]);
+//  case 9:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8]);
+//  case 10:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9]);
+//  case 11:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10]);
+//  case 12:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11]);
+//  case 13:
+//    return sscanf(str,format,p[0],p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],p[12]);
+//  }
+//  return 0;
+//}
 
 # ifdef __cplusplus
 } //extern "C" 
