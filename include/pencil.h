@@ -88,6 +88,7 @@ $Date: 2009/07/24 05:08:46 $
 #define PENCIL_H
 
 # include <algorithm> 
+#include <cstring>
 
 using namespace std;
 
